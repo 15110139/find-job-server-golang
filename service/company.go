@@ -19,7 +19,7 @@ func (companyService *CompanyService) CreateCompany(company entities.Company) en
 		fmt.Printf("Something went wrong: %s", err)
 		panic(err)
 	}
-	company = entities.Company{CompanyId: u1, Name: company.Name, Technologies: company.Technologies, CompanyType: company.CompanyType, Location: company.Location, Decs: company.Decs, OurPeople: company.OurPeople}
+	company = entities.Company{CompanyId: u1, Name: company.Name, Technologies: company.Technologies, CompanyType: company.CompanyType, Location: company.Location}
 	db.Create(&company)
 	return company
 }

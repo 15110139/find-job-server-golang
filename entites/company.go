@@ -13,12 +13,13 @@ type People struct {
 
 type Company struct {
 	gorm.Model
-	CompanyId    uuid.UUID
+	CompanyId    uuid.UUID  `json:"companyId"`
 	Name         string   `json:"name"`
-	Technologies []string `gorm: "type:string[]"`
+	// Technologies []string `gorm: "technologies type:string[]"`
+	Technologies string `json:"technologies"`
 	CompanyType  string   `json:"companyType"`
 	Location     string   `json:"location"`
-	Decs         string   `json:"decs"`
-	OurStore     string   `json:"ourStore"`
-	OurPeople    []People `gorm: "type:People[]"`
+	// Decs         string   `json:"decs"`
+	// OurStore     string   `json:"ourStore"`
+	// OurPeople    []People `gorm: "type:People[]"`
 }

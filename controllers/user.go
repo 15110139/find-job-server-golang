@@ -6,7 +6,7 @@ import (
 	jwt "github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	entities "github.com/testgolang/entites"
-	userservice "github.com/testgolang/service"
+	service "github.com/testgolang/service"
 	util "github.com/testgolang/util"
 )
 
@@ -22,7 +22,7 @@ func (userControllers *UserControllers) Register(c *gin.Context) {
 	mySigningKey := []byte("AllYourBase")
 	var userObj entities.User
 	c.ShouldBindJSON(&userObj)
-	userService := userservice.UserService{}
+	userService := service.UserService{}
 	user := userService.CreateUser(userObj)
 	claims := MyCustomClaims{
 		user.UserId,
@@ -47,7 +47,7 @@ func (userControllers *UserControllers) Login(c *gin.Context) {
 	var userObj entities.User
 	c.ShouldBindJSON(&userObj)
 	var userName = userObj.UserName
-	userService := userservice.UserService{}
+	userService := service.UserService{}
 	user := userService.FindUserWithUserName(userName)
 	if user.Password != userObj.Password {
 		util.RespondWithError(c, "INCRRECT_PASSWORD")
