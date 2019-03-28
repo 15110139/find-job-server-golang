@@ -1,9 +1,12 @@
 package util
 
-import "github.com/gin-gonic/gin"
+import (
+	"net/http"
+	"github.com/gin-gonic/gin"
+)
 
 func RespondWithError(c *gin.Context, err string) {
-	c.AbortWithStatusJSON(500, gin.H{
+	c.JSON(http.StatusNotFound, gin.H{
 		"error":  err,
 		"data":   nil,
 		"status": "Error",
@@ -11,7 +14,7 @@ func RespondWithError(c *gin.Context, err string) {
 }
 
 func RespondSuccess(c *gin.Context, data gin.H) {
-	c.JSON(200, gin.H{
+	c.JSON(http.StatusOK, gin.H{
 		"error":  nil,
 		"data":   data,
 		"status": "Successfull",

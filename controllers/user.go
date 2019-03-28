@@ -2,7 +2,6 @@ package controllers
 
 import (
 	uuid "github.com/satori/go.uuid"
-
 	jwt "github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	entities "github.com/testgolang/entites"
@@ -27,19 +26,22 @@ func (userControllers *UserControllers) Register(c *gin.Context) {
 	claims := MyCustomClaims{
 		user.UserId,
 		jwt.StandardClaims{
-			ExpiresAt: 86400,
+			ExpiresAt: 84000,
 		},
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	ss, err := token.SignedString(mySigningKey)
 	if err != nil {
+		panic(err)
 		util.RespondWithError(c, "CREATE_TOKEN_FAILURE")
+		return
+	}else{
+		util.RespondSuccess(c, gin.H{
+			"token": ss,
+		})
+		return
 	}
-
-	util.RespondSuccess(c, gin.H{
-		"token": ss,
-	})
 }
 
 func (userControllers *UserControllers) Login(c *gin.Context) {
@@ -51,21 +53,28 @@ func (userControllers *UserControllers) Login(c *gin.Context) {
 	user := userService.FindUserWithUserName(userName)
 	if user.Password != userObj.Password {
 		util.RespondWithError(c, "INCRRECT_PASSWORD")
+		return
+	} else {
+		claims := MyCustomClaims{
+			user.UserId,
+			jwt.StandardClaims{
+				ExpiresAt: 84000,
+			},
+		}
+		token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+		ss, err := token.SignedString(mySigningKey)
+		if err != nil {
+			util.RespondWithError(c, "CREATE_TOKEN_FAILURE")
+			return
+
+		}else{
+			util.RespondSuccess(c, gin.H{
+				"token": ss,
+			})
+			return
+		}
 	}
 	// Create the Claims
-	claims := MyCustomClaims{
-		user.UserId,
-		jwt.StandardClaims{
-			ExpiresAt: 86400,
-		},
-	}
+	
 
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	ss, err := token.SignedString(mySigningKey)
-	if err != nil {
-		util.RespondWithError(c, "CREATE_TOKEN_FAILURE")
-	}
-	util.RespondSuccess(c, gin.H{
-		"token": ss,
-	})
 }

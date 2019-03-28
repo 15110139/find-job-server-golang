@@ -9,20 +9,28 @@ import (
 )
 
 func TokenAuthMiddleware(c *gin.Context) {
+	mySigningKey := []byte("AllYourBase")
+
 	tokenString := c.Request.Header.Get("token")
 	if tokenString == "" {
 		util.RespondWithError(c, "TOKEN_REQUIRE")
 		return
 	}
-
-	tokenString = "eyJhbGciOiJIUzI1ddNiIsInR5cCI6IkpXVCJ9.eyJmb28iOiJiYXIiLCJleHAiOjE1MDAwLCJpc3MiOiJ0ZXN0In0.HE7fK0xOQwFEr4WDgRWj4teRPZ6i3GLwD5YCm6Pwu_c"
-
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
-		return []byte("AllYourBase"), nil
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, fmt.Errorf("There was an error")
+		}
+		return mySigningKey, nil
 	})
 
 	if token.Valid {
 		fmt.Println("You look nice today")
+		c.Next()
+		if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
+			fmt.Println(claims["foo"], claims["nbf"])
+		} else {
+			fmt.Println(err)
+		}
 	} else if ve, ok := err.(*jwt.ValidationError); ok {
 		if ve.Errors&jwt.ValidationErrorMalformed != 0 {
 			fmt.Println("That's not even a token")
@@ -35,5 +43,4 @@ func TokenAuthMiddleware(c *gin.Context) {
 	} else {
 		fmt.Println("Couldn't handle this token:", err)
 	}
-	c.Next()
 }

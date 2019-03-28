@@ -1,57 +1,48 @@
-package service	
+package service
 
-import(
-	"github.com/testgolang/config"
-	"github.com/olivere/elastic"
+import (
 	"context"
-	"fmt"
 	"encoding/json"
-	uuid "github.com/satori/go.uuid"
+	"fmt"
 
+	"github.com/olivere/elastic"
+	uuid "github.com/satori/go.uuid"
+	"github.com/testgolang/config"
 )
 
-
 type Returnd struct {
-	_index string
-	_type  string
-	_id string
-	_score float64
-	_source  struct{
-		companyId string
-		companyType string
+	_index  string
+	_type   string
+	_id     string
+	_score  float64
+	_source struct {
+		companyId    string
+		companyType  string
 		technologies string
-		location string
+		location     string
 	}
 }
-
 
 type SearchService struct {
 }
 
-
 type DocumentResponse struct {
-	CompanyId    uuid.UUID  `json:"companyId"`
-	Name         string   `json:"name"`
+	CompanyId uuid.UUID `json:"companyId"`
+	Name      string    `json:"name"`
 	// Technologies []string `gorm: "technologies type:string[]"`
 	Technologies string `json:"technologies"`
-	CompanyType  string   `json:"companyType"`
-	Location     string   `json:"location"`
+	CompanyType  string `json:"companyType"`
+	Location     string `json:"location"`
 }
 
-type SearchResponse struct {
-	Time      string             `json:"time"`
-	Hits      string             `json:"hits"`
-	Documents []DocumentResponse `json:"documents"`
-}
-func (searchService *SearchService) Search(value string) {
-	fmt.Println("hih")
+func (searchService *SearchService) Search(value string, offset, limit int) []DocumentResponse {
 	ctx := context.Background()
 	client := config.GetElactic(ctx)
-	termQuery := elastic.NewMultiMatchQuery(value,"companyType","location","technologies","name")
+	termQuery := elastic.NewMultiMatchQuery(value, "companyType", "location", "technologies", "name")
 	result, err := client.Search().
 		Index("job").
 		Query(termQuery).
-		From(0).Size(10).
+		From(offset).Size(limit).
 		Do(ctx)
 	if err != nil {
 		panic(err)
@@ -64,5 +55,5 @@ func (searchService *SearchService) Search(value string) {
 		fmt.Println(doc)
 		docs = append(docs, doc)
 	}
-
+	return docs
 }
