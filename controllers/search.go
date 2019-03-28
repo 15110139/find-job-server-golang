@@ -3,10 +3,10 @@ package controllers
 import (
 	"strconv"
 
-	"github.com/testgolang/util"
+	"github.com/find-job-server-golang/util"
 	_"fmt"
 	"github.com/gin-gonic/gin"
-	service "github.com/testgolang/service"
+	service "github.com/find-job-server-golang/service"
 )
 
 type SearchControllers struct {

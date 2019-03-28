@@ -5,7 +5,7 @@ import (
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
-	"github.com/testgolang/util"
+	"github.com/find-job-server-golang/util"
 )
 
 func TokenAuthMiddleware(c *gin.Context) {

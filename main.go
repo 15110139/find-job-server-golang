@@ -2,8 +2,8 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
-	controllers "github.com/testgolang/controllers"
-	// "github.com/testgolang/middleware"
+	controllers "github.com/find-job-server-golang/controllers"
+	// "github.com/find-job-server-golang/middleware"
 )
 
 func main() {

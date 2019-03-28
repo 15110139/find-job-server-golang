@@ -4,9 +4,9 @@ import (
 	uuid "github.com/satori/go.uuid"
 	jwt "github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
-	entities "github.com/testgolang/entites"
-	service "github.com/testgolang/service"
-	util "github.com/testgolang/util"
+	entities "github.com/find-job-server-golang/entites"
+	service "github.com/find-job-server-golang/service"
+	util "github.com/find-job-server-golang/util"
 )
 
 type UserControllers struct {

@@ -4,8 +4,8 @@ import (
 	"fmt"
 
 	uuid "github.com/satori/go.uuid"
-	"github.com/testgolang/config"
-	entities "github.com/testgolang/entites"
+	"github.com/find-job-server-golang/config"
+	entities "github.com/find-job-server-golang/entites"
 )
 
 type CompanyService struct {

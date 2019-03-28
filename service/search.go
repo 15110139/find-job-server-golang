@@ -7,7 +7,7 @@ import (
 
 	"github.com/olivere/elastic"
 	uuid "github.com/satori/go.uuid"
-	"github.com/testgolang/config"
+	"github.com/find-job-server-golang/config"
 )
 
 type Returnd struct {
