@@ -13,5 +13,5 @@ func main() {
 	router.Auth(v1.Group("/auth"))
 	router.Search(v1)
 	// apiv1.GET("/v1/search", searchControllerr.Search)
-	r.Run(":3000")
+	r.Run(":6969")
 }
