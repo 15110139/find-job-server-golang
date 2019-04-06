@@ -5,9 +5,9 @@ import (
 	"encoding/json"
 	"fmt"
 
+	"github.com/find-job-server-golang/config"
 	"github.com/olivere/elastic"
 	uuid "github.com/satori/go.uuid"
-	"github.com/find-job-server-golang/config"
 )
 
 type Returnd struct {
@@ -40,7 +40,7 @@ func (searchService *SearchService) Search(value string, offset, limit int) []Do
 	client := config.GetElactic(ctx)
 	termQuery := elastic.NewMultiMatchQuery(value, "companyType", "location", "technologies", "name")
 	result, err := client.Search().
-		Index("job").
+		Index("data-work").
 		Query(termQuery).
 		From(offset).Size(limit).
 		Do(ctx)
