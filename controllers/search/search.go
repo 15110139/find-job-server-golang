@@ -1,12 +1,14 @@
-package controllers
+package searchcontrollers
 
 import (
 	"strconv"
 
-	"github.com/find-job-server-golang/util"
-	_"fmt"
-	"github.com/gin-gonic/gin"
+	_ "fmt"
+
 	service "github.com/find-job-server-golang/service"
+	constant "github.com/find-job-server-golang/util/constant"
+	response "github.com/find-job-server-golang/util/response"
+	"github.com/gin-gonic/gin"
 )
 
 type SearchControllers struct {
@@ -18,18 +20,18 @@ func (searchControllers *SearchControllers) Search(c *gin.Context) {
 	limit, _ := c.GetQuery("limit")
 	offsetInt, err1 := strconv.Atoi(offset)
 	if err1 != nil {
-		util.RespondWithError(c, "OFFSET_MUST_BE_NUMBER")
+		response.RespondWithError(c, constant.OFFSET_MUST_BE_NUMBER, 500)
 		return
 	}
 	limitInt, err2 := strconv.Atoi(limit)
 	if err2 != nil {
-		 util.RespondWithError(c, "LIST_MUST_BE_NUMBER")
-		 return
+		response.RespondWithError(c, constant.LIMIT_MUST_BE_NUMBER, 500)
+		return
 	}
 	searchService := service.SearchService{}
 	dataSearch := searchService.Search(text, offsetInt, limitInt)
-	util.RespondSuccess(c, gin.H{
+	response.RespondSuccess(c, gin.H{
 		"data": dataSearch,
-	})
+	}, 200)
 	return
 }

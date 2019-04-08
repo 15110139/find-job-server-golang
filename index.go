@@ -1,14 +1,16 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"reflect"
+)
+
+type User struct {
+	user string
+}
 
 func main() {
-	ch := make(chan int, 4)
-	ch <- 1
-	ch <- 2
-	ch <- 100000000
-	fmt.Println(<-ch)
-	fmt.Println(<-ch)
-	fmt.Println(<-ch)
+	var name string = "Carl Johannes"
+	fmt.Println("name is a type of: ", reflect.TypeOf(name))
 
 }

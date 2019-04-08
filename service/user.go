@@ -3,9 +3,9 @@ package service
 import (
 	"fmt"
 
-	uuid "github.com/satori/go.uuid"
 	"github.com/find-job-server-golang/config"
 	entities "github.com/find-job-server-golang/entites"
+	uuid "github.com/satori/go.uuid"
 )
 
 type UserService struct {
@@ -19,24 +19,29 @@ func (userService *UserService) CreateUser(user entities.User) entities.User {
 		fmt.Printf("Something went wrong: %s", err)
 		panic(err)
 	}
-	user = entities.User{UserId: u1, Email: user.Email, FirstName: user.FirstName, LastName: user.LastName, UserName: user.UserName, Password: user.Password}
+	user = entities.User{UserId: u1, Email: user.Email, FirstName: user.FirstName, LastName: user.LastName, Password: user.Password, IsActive: true}
 	db.Create(&user)
 	return user
 }
 
-func (userService *UserService) FindUserWithUserName(UserName string) entities.User {
+func (userService *UserService) FindUserWithEmail(email string) (entities.User, bool) {
 	db := config.GetPostgersDB()
 	db.AutoMigrate(&entities.User{})
 	var user entities.User
-	fmt.Printf("username", UserName)
-	db.Find(&user, "user_name = ?", UserName)
-	return user
+	isNotFound := db.Where("email = ?", email).First(&user).RecordNotFound()
+	return user, isNotFound
 }
 
-func (userService *UserService) FindUserWithID(ID string) entities.User {
+func (userService *UserService) FindUserWithUserId(userId string) (entities.User, bool) {
 	db := config.GetPostgersDB()
-	// db.AutoMigrate(&entities.User{})
 	var user entities.User
-	db.Find(&user, "ID = ?", ID)
-	return user
+	isNotFound := db.Where("user_id = ?", userId).First(&user).RecordNotFound()
+	return user, isNotFound
+}
+
+func (UserService *UserService) UpdateProfile(userId string, user entities.User) entities.User {
+	db := config.GetPostgersDB()
+	var result entities.User
+	db.Model(&result).Where("user_id = ?", "8b289ab1-4a6a-11e9-b4e6-ecf4bb358d13").Update(user)
+	return result
 }

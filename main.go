@@ -3,10 +3,13 @@ package main
 import (
 	router "github.com/find-job-server-golang/router"
 	"github.com/gin-gonic/gin"
+	// "github.com/find-job-server-golang/middleware"
+
 )
 
 func main() {
 	r := gin.Default()
+	// r.Use(middleware.RequestIdMiddleware())
 	v1 := r.Group("/v1")
 	router := router.Router{}
 
