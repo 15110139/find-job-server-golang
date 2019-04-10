@@ -22,6 +22,6 @@ type Company struct {
 	Location     string   `json:"location"`
 	Decs         string   `json:"decs"`
 	OurStory    string   `json:"ourStory"`
-	OurPeople    []People `gorm: "type:People[]"`
+	// OurPeople    []People `gorm: "type:People[]"`
 	IsActive    bool 	  `json:"isActive"`
 }
