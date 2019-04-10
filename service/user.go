@@ -39,9 +39,9 @@ func (userService *UserService) FindUserWithUserId(userId string) (entities.User
 	return user, isNotFound
 }
 
-func (UserService *UserService) UpdateProfile(userId string, user entities.User) entities.User {
+func (userService *UserService) UpdateProfile(userId string, user entities.User) entities.User {
 	db := config.GetPostgersDB()
 	var result entities.User
-	db.Model(&result).Where("user_id = ?", "8b289ab1-4a6a-11e9-b4e6-ecf4bb358d13").Update(user)
+	db.Model(&result).Where("user_id = ?", userId).Update(user)
 	return result
 }

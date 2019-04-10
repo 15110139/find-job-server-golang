@@ -14,7 +14,10 @@ func main() {
 	router := router.Router{}
 
 	router.Auth(v1.Group("/auth"))
+	router.Company(v1.Group("/company"))
+
 	router.Search(v1)
+	
 	// apiv1.GET("/v1/search", searchControllerr.Search)
 	r.Run(":6969")
 }
