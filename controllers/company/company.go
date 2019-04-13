@@ -81,3 +81,15 @@ func (companyControllers *CompanyControllers) Companies(c *gin.Context){
 }
 
 
+// func (companyControllers *CompanyControllers) Comapny(c *gin.Context){
+// 	companyService := service.CompanyService{}
+// 	companyId:= c.Params.ByName("companyId")
+// 	company,isNotFount:= companyService.FindCompanyWithID(companyId)
+// 	if(isNotFount){
+// 		response.RespondSuccess(c,gin.H{
+// 			"data":company,
+// 		},200)
+// 		return
+// 	}
+	
+// }

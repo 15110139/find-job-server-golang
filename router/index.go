@@ -30,6 +30,7 @@ func (route *Router) Company(router *gin.RouterGroup) {
 	router.POST("/createCompany", route.company.CreateCompany)
 	router.PUT("/updateCompany", route.company.UpdateCompany)
 	router.GET("/companies", route.company.Companies)
+	// router.GET("/company/:companyId", route.company.Company)
 }
 
 
