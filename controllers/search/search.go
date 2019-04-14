@@ -16,11 +16,11 @@ type SearchControllers struct {
 
 func (searchControllers *SearchControllers) Search(c *gin.Context) {
 	text, _ := c.GetQuery("text")
-	offset, _ := c.GetQuery("offset")
+	page, _ := c.GetQuery("page")
 	limit, _ := c.GetQuery("limit")
-	offsetInt, err1 := strconv.Atoi(offset)
+	pageInt, err1 := strconv.Atoi(page)
 	if err1 != nil {
-		response.RespondWithError(c, constant.OFFSET_MUST_BE_NUMBER, 500)
+		response.RespondWithError(c, constant.PAGE_MUST_BE_NUMBER, 500)
 		return
 	}
 	limitInt, err2 := strconv.Atoi(limit)
@@ -29,7 +29,7 @@ func (searchControllers *SearchControllers) Search(c *gin.Context) {
 		return
 	}
 	searchService := service.SearchService{}
-	dataSearch := searchService.Search(text, offsetInt, limitInt)
+	dataSearch := searchService.Search(text, pageInt, limitInt)
 	response.RespondSuccess(c, gin.H{
 		"data": dataSearch,
 	}, 200)

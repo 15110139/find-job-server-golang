@@ -1,6 +1,7 @@
 package comapnycontrolers
 
 import (
+	"strconv"
 	"fmt"
 	"github.com/satori/go.uuid"
 	"github.com/find-job-server-golang/service"
@@ -75,15 +76,30 @@ func (companyControllers *CompanyControllers) UpdateCompany(c *gin.Context){
 
 func (companyControllers *CompanyControllers) Companies(c *gin.Context){
 	companyService := service.CompanyService{}
-	companies:= companyService.Companies()
+	page,_ :=c.GetQuery("page")
+	limit,_:=c.GetQuery("limit")
+	pageInt, err1 := strconv.Atoi(page)
+	if err1 != nil {
+		response.RespondWithError(c, constant.PAGE_MUST_BE_NUMBER, 500)
+		return
+	}
+	limitInt, err2 := strconv.Atoi(limit)
+	if err2 != nil {
+		response.RespondWithError(c, constant.LIMIT_MUST_BE_NUMBER, 500)
+		return
+	}
+	companies := companyService.Companies(limitInt,pageInt)
+	allRecordCompany := companyService.CompaniesCount()
 	response.RespondSuccess(c,gin.H{
 		"data":companies,
+		"totalPage":allRecordCompany/limitInt,
+		"currentPage":pageInt,
 	},200)
 	return
 }
 
 
-func (companyControllers *CompanyControllers) Comapny(c *gin.Context){
+func (companyControllers *CompanyControllers) Company(c *gin.Context){
 	companyService := service.CompanyService{}
 	companyId,_:= uuid.FromString(c.Params.ByName("companyId"))
 	fmt.Println(companyId)

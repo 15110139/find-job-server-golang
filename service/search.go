@@ -18,7 +18,7 @@ type Returnd struct {
 	_source struct {
 		companyId    string
 		companyType  string
-		technologies string
+		technologies []string
 		location     string
 	}
 }
@@ -35,14 +35,14 @@ type DocumentResponse struct {
 	Location     string `json:"location"`
 }
 
-func (searchService *SearchService) Search(value string, offset, limit int) []DocumentResponse {
+func (searchService *SearchService) Search(value string, page, limit int) []DocumentResponse {
 	ctx := context.Background()
 	client := config.GetElactic(ctx)
 	termQuery := elastic.NewMultiMatchQuery(value, "companyType", "location", "technologies", "name")
 	result, err := client.Search().
 		Index("data-work").
 		Query(termQuery).
-		From(offset).Size(limit).
+		From(page*limit).Size(limit).
 		Do(ctx)
 	if err != nil {
 		panic(err)

@@ -56,10 +56,18 @@ func (companyService *CompanyService) FindCompanyWithName(name string) (entities
 // }
 
 
-func (companyService *CompanyService) Companies() []entities.Company{
+func (companyService *CompanyService) Companies(limit ,page int) []entities.Company{
 	db := config.GetPostgersDB()
 	db.AutoMigrate(&entities.Company{})
 	var companies []entities.Company
-	db.Find(&companies)
+	db.Offset(limit*page).Find(&companies).Limit(limit)
 	return companies
+}
+
+func (companyService *CompanyService) CompaniesCount() int {
+	db := config.GetPostgersDB()
+	var count int
+	db.Table("companies").Count(&count)
+	fmt.Println(count)
+	return count
 }

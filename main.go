@@ -15,7 +15,7 @@ func main() {
 
 	router.Auth(v1.Group("/auth"))
 	router.Company(v1.Group("/company"))
-
+	router.Job(v1.Group("/job"))
 	router.Search(v1)
 	
 	// apiv1.GET("/v1/search", searchControllerr.Search)
