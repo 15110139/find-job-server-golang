@@ -1,6 +1,8 @@
 package comapnycontrolers
 
 import (
+	"fmt"
+	"github.com/satori/go.uuid"
 	"github.com/find-job-server-golang/service"
 	"github.com/gin-gonic/gin"
 	entities "github.com/find-job-server-golang/entites"
@@ -81,15 +83,19 @@ func (companyControllers *CompanyControllers) Companies(c *gin.Context){
 }
 
 
-// func (companyControllers *CompanyControllers) Comapny(c *gin.Context){
-// 	companyService := service.CompanyService{}
-// 	companyId:= c.Params.ByName("companyId")
-// 	company,isNotFount:= companyService.FindCompanyWithID(companyId)
-// 	if(isNotFount){
-// 		response.RespondSuccess(c,gin.H{
-// 			"data":company,
-// 		},200)
-// 		return
-// 	}
+func (companyControllers *CompanyControllers) Comapny(c *gin.Context){
+	companyService := service.CompanyService{}
+	companyId,_:= uuid.FromString(c.Params.ByName("companyId"))
+	fmt.Println(companyId)
+	company,isNotFound:= companyService.FindCompanyWithID(companyId)
+	if(isNotFound){
+		response.RespondWithError(c,constant.COMPANY_NOT_FOUND,500)
+		return
+	}else{
+		response.RespondSuccess(c,gin.H{
+			"data":company,
+		},200)
+		return
+	}
 	
-// }
+}
