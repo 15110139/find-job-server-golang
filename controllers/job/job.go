@@ -1,6 +1,7 @@
 package jobcontrolers
 
 import (
+	"fmt"
 	"strconv"
 	"github.com/satori/go.uuid"
 	"github.com/find-job-server-golang/service"
@@ -18,7 +19,6 @@ type JobControllers struct {
 }
 
 func (jobControllers *JobControllers) CreateJob(c *gin.Context){
-
 	var jobObj entities.Job
 	c.ShouldBindJSON(&jobObj)
 	jobService := service.JobService{}
@@ -86,6 +86,7 @@ func (jobControllers *JobControllers) Jobs(c *gin.Context){
 		response.RespondWithError(c, constant.LIMIT_MUST_BE_NUMBER, 500)
 		return
 	}
+	fmt.Println(limitInt,pageInt)
 	jobs := jobService.Jobs(limitInt,pageInt)
 	allRecordJob := jobService.JobsCount()
 	response.RespondSuccess(c,gin.H{

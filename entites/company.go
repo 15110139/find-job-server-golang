@@ -17,7 +17,7 @@ type Company struct {
 	gorm.Model
 	CompanyId    uuid.UUID  `json:"companyId"`
 	Name         string   `json:"name"`
-	Technologies pq.StringArray `gorm: "type:text[]"` 
+	Technologies pq.StringArray `json:"technologies" gorm: "type:text[]"` 
 	CompanyType  string   `json:"companyType"`
 	Location     string   `json:"location"`
 	Decs         string   `json:"decs"`

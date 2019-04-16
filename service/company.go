@@ -18,14 +18,13 @@ func (companyService *CompanyService) CreateCompany(company entities.Company) en
 		fmt.Printf("Something went wrong: %s", err)
 		panic(err)
 	}
-	company = entities.Company{CompanyId: u1, Name: company.Name, CompanyType: company.CompanyType, Location: company.Location}
+	company = entities.Company{CompanyId: u1, Name: company.Name, CompanyType: company.CompanyType, Location: company.Location,IsActive:true}
 	db.Create(&company)
 	return company
 }
 
 func (companyService *CompanyService) FindCompanyWithID(ID uuid.UUID) (entities.Company,bool) {
 	db := config.GetPostgersDB()
-	// db.AutoMigrate(&entities.User{})
 	var company entities.Company
 	isNotFound := db.Where("company_id = ?", ID).First(&company).RecordNotFound()
 	return company, isNotFound
@@ -41,7 +40,6 @@ func (companyService*CompanyService) UpdateCompanyWithID(ID uuid.UUID, company e
 
 func (companyService *CompanyService) FindCompanyWithName(name string) (entities.Company, bool) {
 	db := config.GetPostgersDB()
-	db.AutoMigrate(&entities.Company{})
 	var company entities.Company
 	isNotFound := db.Where("name = ?", name).First(&company).RecordNotFound()
 	return company, isNotFound
@@ -58,7 +56,6 @@ func (companyService *CompanyService) FindCompanyWithName(name string) (entities
 
 func (companyService *CompanyService) Companies(limit ,page int) []entities.Company{
 	db := config.GetPostgersDB()
-	db.AutoMigrate(&entities.Company{})
 	var companies []entities.Company
 	db.Offset(limit*page).Find(&companies).Limit(limit)
 	return companies

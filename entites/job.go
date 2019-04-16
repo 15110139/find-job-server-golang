@@ -6,20 +6,13 @@ import (
 	uuid "github.com/satori/go.uuid"
 )
 
-// type People struct {
-// 	PeopleId uuid.UUID `json:"peopleId"`
-// 	Name      string
-// 	Position  string
-// 	Introduce string
-// }
 
 type Job struct {
 	gorm.Model
 	JobId    uuid.UUID  `json:"jobId"`
-	Name         string   `json:"name"`
-	Technologies pq.StringArray `gorm: "type:text[]"` 
-	Location     string   `json:"location"`
-	Decs         pq.StringArray `gorm: "type:text[]"` 
-	Require      pq.StringArray `gorm: "type:text[]"` 
-	IsActive    bool 	  `json:"isActive"`
+	Name string  `json:"name"`
+	Require  pq.StringArray `json:"require" gorm: "type:text[]"` 
+	Desc  pq.StringArray `json:"desc" gorm: "type:text[]"` 
+	Technologies  pq.StringArray `json:"technologies" gorm: "type:text[]"` 
+	IsActive bool `json:"isActive"`
 }
